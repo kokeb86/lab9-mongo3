@@ -1,0 +1,47 @@
+
+Aggregation queries
+
+1)
+db.zipcode.aggregate(
+    [
+        {$match : {state : "IA"}}
+    ]
+);
+
+2)
+
+
+db.zipcode.aggregate(
+    [
+        {$match : {pop : {$lt : 1000}}}
+        ]
+);
+
+3)
+db.zipcode.aggregate([
+{$group:{
+  _id : {"city" : "$city", "state" : "$state" },
+  
+  Tzip:{$sum:1}}},
+  $match:{Tzip:{$gt:1}}},
+  {$sort:{"_id.city":1,"_id.state":1}}
+  ]
+  ):
+
+
+  4)
+  db.zipcode.aggregate({
+    {$group:{_id:{state:"$state", city:"$city"},
+             population:{$sum:"$pop"},}},
+             {$sort:{"_id.state": 1, "population":1}},
+             {$group:{_id:"$_id.state",
+                        city:{$last: "$_id.city"},
+                        population:{$last:"$population"}}},
+                        {$sort:{"_id:1"}}])
+
+
+
+
+
+
+
